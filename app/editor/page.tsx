@@ -10,7 +10,7 @@ import CollapsibleOutlineBar from "../components/CollapsibleOutlineBar";
 const Header = ({ onClick, lastSaved, title, onTitleChange }: { onClick: any, lastSaved: string, title: string, onTitleChange: any }) => (
   <header className="h-auto px-4 py-5 flex ml-10 justify-between items-center">
     <div className="flex items-center">
-      <Link href="/home">
+      <Link href="/home/templates">
         <BsHouseDoorFill size={45} className="mr-4 border border-2 border-black rounded-md p-2 hover:bg-[#2D3648] hover:text-white hover:border-transparent transition-all duration-200" />
       </Link>
       <div>
@@ -82,12 +82,12 @@ const Page = () => {
       />
       <main className="flex flex-col md:flex-row flex-1 border-t-4 overflow-hidden">
         {!isSidebarCollapsed && (
-          <aside className="w-full md:w-[320px] border-r-4 h-full overflow-hidden">
+          <aside className="w-full md:w-[320px] border-r-4 h-full overflow-auto">
             <CollapsibleOutlineBar />
           </aside>
         )}
         
-        <div className="relative flex-1 w-full min-h-full overflow-hidden">
+        <div className="relative flex-1 w-full min-h-full">
           <button 
             className={`absolute top-1/2 left-0 transform -translate-y-1/2 w-12 h-12 bg-[#2D3648] text-white border-none p-3 flex justify-center items-center rounded-l-none rounded-r-3xl`}
             onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
