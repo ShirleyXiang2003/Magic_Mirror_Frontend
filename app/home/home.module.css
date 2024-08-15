@@ -1,0 +1,10 @@
+.btn{
+    padding: 16px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--WF-400, #CBD2E0);
+    font-size: 18px;
+    font-weight: 400;
+
+    position: absolute;
+    
+}

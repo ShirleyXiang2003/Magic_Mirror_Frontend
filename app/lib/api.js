@@ -1,4 +1,4 @@
-const BASE_URL = "http://10.63.9.158:3000";
+const BASE_URL = "http://10.63.11.23:3000";
 
 const api = {
   // Fetch a message from the root context endpoint
@@ -213,6 +213,86 @@ const api = {
       throw error;
     }
   },
+  getAllTemplates: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/templates/all`, {
+        method: "GET",
+        headers: {
+          "ngrok-skip-browser-warning": "fuck ngrok",
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Request failed with code ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching all templates:',error);
+      throw error;
+    }
+  },
+  getAllNovels: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/novels/all`, {
+        method: "GET",
+        headers: {
+          "ngrok-skip-browser-warning": "fuck ngrok",
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Request failed with code ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching all novels:',error);
+      throw error;
+    }
+  },
+  // Update Collect for a given novel_id
+  updateCollect: async (novelId) => {
+    try {
+    const response = await fetch(`${BASE_URL}/novels/${novelId}/collect`, {
+      method: "GET",
+        headers: {
+          "ngrok-skip-browser-warning": "fuck ngrok",
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Request failed with code ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching all novels:',error);
+      throw error;
+    }
+  },
+  // Delete novel
+  deleteNovel: async (novelId) => {
+    try {
+      const url = `${BASE_URL}/novels/${novelId}/delete`;
+      const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with code ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error deleting novel:', error);
+      throw error;
+    }
+  },
 };
 
 // for testing
@@ -259,12 +339,12 @@ const runApiTests = async () => {
       // console.log('generateDescription:', generateDescriptionResult);
   
       // Test generateDescriptionStream
-      const imageUrl = "http://localhost:3001/test.png";
-      const file = await fetchImageAsFile(imageUrl, "test-image.jpg");
-      console.log(typeof file);
-      await api.generateDescriptionStream(file, 'previous context', 'next context', 'tag', '', (message) => {
-        console.log(`message: ${JSON.stringify(message)}`);
-      }, (err) => {console.log(`error: ${err}`);}, () => {console.log('done')});
+      // const imageUrl = "http://localhost:3002/test.png";
+      // const file = await fetchImageAsFile(imageUrl, "test-image.jpg");
+      // console.log(typeof file);
+      // await api.generateDescriptionStream(file, 'previous context', 'next context', 'tag', '', (message) => {
+      //   console.log(`message: ${JSON.stringify(message)}`);
+      // }, (err) => {console.log(`error: ${err}`);}, () => {console.log('done')});
   
       // await api.generateDescriptionStream(file, 'previous context', 'next context', 'tag', 'personalities', onMessage, onError, onDone);
   

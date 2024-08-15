@@ -1,9 +1,76 @@
+.toolbar {
+  position: absolute;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  border-left: 1px solid #ccc;
+  transition: width 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  overflow-x:hidden;
+}
+
+.title {
+  width: 89px;
+  height: 27px;
+  gap: 0px;
+  opacity: 1;
+  font-family: "Noto Sans SC";
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  text-align: left;
+  color: #000000;
+}
+
+.sectionsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  width: 64px;
+  height: 53px;
+  padding: 16px 8px;
+  gap: 4px;
+  border-bottom: 2px solid transparent;
+  opacity: 1;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.section:hover {
+  border-bottom: 2px solid black;
+}
+
+.selectedSection {
+  border-bottom: 2px solid black;
+}
+
+.icon {
+  font-size: 16px;
+}
+
+.label {
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  writing-mode: horizontal-tb;
+}
+
 .imageContainer {
   display: flex;
   flex-direction: column;
   width: 290px; 
   height: auto; 
-  padding: 16px 0 0 0;
+  padding: 10px 0 0 0;
   gap: 16px;
   border-radius: 16px 0 0 0;
   justify-content: center;
@@ -11,18 +78,62 @@
   opacity: 1; 
   position: relative;
 }
-.scroll{
-  overflow-y: auto;
-  margin-top: 20px;
-  display: flex;
 
-}
 
 .image {
-  width: 250px; 
+  width: 260px; 
   height: 150px; 
   object-fit: cover;
   border-radius: 16px;
+}
+
+.tabsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;  
+}
+
+.tabsRow {
+  display: flex;
+  justify-content: flex-start;
+  gap: 4px;
+  width: 100%;
+  margin-left: 30px;
+}
+
+.tab {
+  margin-right: 0;
+  display: inline-flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  color: var(--WF-white, #FFF);
+  font-feature-settings: 'calt' off;
+  font-family: "Noto Sans SC";
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  transition: background 0.3s, border 0.3s;
+}
+
+.selected {
+  background: #2D3648;
+  opacity: 1;
+  color: #FFF;
+}
+
+.unselected {
+  background: transparent;
+  border: 2px solid #2D3648;
+  opacity: 1;
+  color: #2D3648;
 }
 
 .cardContainer {
@@ -34,12 +145,13 @@
   border-radius: 16px;
   opacity: 1;
   align-items: center;
+  justify-content: center;
 }
 
 .card {
   position: relative;
   width: 250px;
-  height: 110px;
+  height: auto;
   padding: 16px;
   gap: 8px;
   border-radius: 16px;
@@ -51,6 +163,10 @@
   font-weight: 500;
   line-height: 21px;
   text-align: left;
+}
+
+.cardContainer {
+  margin-left: -15px;
 }
 
 
@@ -82,7 +198,7 @@
   background: #EDF0F7;
   font-size: 11px;
   margin-top: -5px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .selectedImageBlock {
@@ -91,8 +207,9 @@
   border-radius: 13px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 40px;
+  margin-left: 15px;
   position: relative;
   padding-top: 0;
 }
@@ -108,17 +225,27 @@
   width: 100%;
   padding: 20px;
   text-align: left;
-  overflow-wrap: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
   flex-grow: 1;
   position: relative;
   color: #2D3648;
   font-size: 14px;
 }
 
-.actionButton {
-  width: 80%;
+.actionButtonContainer {
+  width: 100%;
   height: 56px;
-  padding: 16px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.actionButton {
+  width: 40%;
+  height: 34px;
+  padding: 1px 2px;
   gap: 8px;
   border-radius: 8px;
   opacity: 1;
@@ -130,9 +257,11 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 20px; 
-  font-size: 14px;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: small;
   font-family: Noto Sans SC;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .regenerateIcon {
@@ -156,4 +285,24 @@
 
 .rotate {
   animation: rotate 1s linear;
+}
+
+.resultHeading {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  margin-left: 20px;
+  font-size: 17px;
+}
+
+.scrollPrimary {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 550px;
+}
+
+.scrollSecondary {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 670px;
 }

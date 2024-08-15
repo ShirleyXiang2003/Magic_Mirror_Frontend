@@ -1,10 +1,16 @@
+'use client';
 import React, { useState, useEffect } from 'react';
-import { BsImages, BsReverseLayoutTextSidebarReverse, BsBoxArrowInUpLeft, BsArrowRepeat } from 'react-icons/bs';
+import { BsImages, BsReverseLayoutTextSidebarReverse, BsBoxArrowInUpLeft, BsArrowRepeat, BsStars } from 'react-icons/bs';
 import styles from './AssetBar.module.css';
 import api from '../../lib/api';
 
-export default function CollapsibleToolbar() {
-  const BASE_URL = "http://10.63.9.158:3000";
+interface AssetsBarProps {
+  prevText: string;
+  nextText: string; 
+}
+
+export default function AssetsBar({ prevText, nextText }: AssetsBarProps) {
+  const BASE_URL = "http://10.63.11.23:3000";
   const [selectedSection, setSelectedSection] = useState(0); 
   const [selectedTab, setSelectedTab] = useState(0);
   const [assets, setAssets] = useState<any[]>([]);
@@ -17,6 +23,8 @@ export default function CollapsibleToolbar() {
   const [textQueueForText, setTextQueueForText] = useState<any[]>([]);
   const [isRotating, setIsRotating] = useState(false);
   const [lastText, setLastText] = useState('');
+  const [selectedTag, setSelectedTag] = useState<string | null>(null); 
+  const [selectedTagForText, setSelectedTagForText] = useState<string | null>(null); 
 
   async function fetchImageAsFile(imageUrl: string, fileName: string) {
     const response = await fetch(imageUrl);
@@ -54,16 +62,18 @@ export default function CollapsibleToolbar() {
     setSelectedImageUrl(null); 
   };
 
-  const handleImageClick = async (imageUrl: string) => {
+  const handleImageClick = async (imageUrl: string, imageTag: string) => {
     setIsImageSelected(true);
     setSelectedImageUrl(imageUrl);
-    await handlePicture(imageUrl);
+    setSelectedTag(imageTag);
+    await handlePicture(imageUrl, imageTag);
   };
 
-  const handleTextClick = async (text: string) => {
+  const handleTextClick = async (text: string, textTag: string) => {
     setIsTextSelected(true);
+    setSelectedTagForText(textTag);
     setLastText(text);
-    await handleText(text);
+    await handleText(text, textTag);
   };
 
   const handleTabClick = (index: number) => {
@@ -83,13 +93,8 @@ export default function CollapsibleToolbar() {
 
   // Handle Image-to-Text Generation
 
-  const handlePicture = async (imageUrl: string) => {
+  const handlePicture = async (imageUrl: string, tag: string) => {
     const file = await fetchImageAsFile(imageUrl, "test-image.jpg");
-    const context = {
-      previous: 'previous context',
-      next: 'next context',
-      tag: '环境'
-    };
 
     // Clear previous text and queue
     setDisplayedTextForPic('');
@@ -111,9 +116,9 @@ export default function CollapsibleToolbar() {
 
     await api.generateDescriptionStream(
       file,
-      context.previous,
-      context.next,
-      context.tag,
+      prevText,
+      nextText,
+      tag,
       '',
       handleMessage,
       handleError,
@@ -133,27 +138,23 @@ export default function CollapsibleToolbar() {
   }, [textQueueForPic]);
 
   const handleRegeneratePic = () => {
-    if (selectedImageUrl) {
-      handlePicture(selectedImageUrl);
+    if (selectedImageUrl && selectedTag) {
+      handlePicture(selectedImageUrl, selectedTag);
     }
     setIsRotating(true); 
     setTimeout(() => setIsRotating(false), 1000); 
   };
   const handleRegenerateText = () => {
-    if (lastText) {
-      handleText(lastText);
+    if (lastText && selectedTagForText) {
+      handleText(lastText, selectedTagForText);
     }
     setIsRotating(true); 
     setTimeout(() => setIsRotating(false), 1000); 
   };
 
   // Handle Text-to-Text Generation
-  const handleText = async (text: string) => {
-    const context = {
-      previous: '前端要睡觉了',
-      next: '移动端还在改bug',
-      tag: '心理'
-    };
+  const handleText = async (text: string, tag: string) => {
+    console.log(tag);
 
     // Clear previous text and queue
     setDisplayedTextForText('');
@@ -175,10 +176,10 @@ export default function CollapsibleToolbar() {
 
     await api.polishTextStream(
       text,
-      context.previous,
-      context.next,
-      context.tag,
-      '',
+      prevText,
+      nextText,
+      tag,
+      '天真开朗',
       handleMessage,
       handleError,
       handleDone
@@ -199,35 +200,82 @@ export default function CollapsibleToolbar() {
 
   return (
     <div className="w-full">
-      <div className="text-lg mb-4 text-center">AI素材卡片</div>
+      <div className={`text-lg mb-4 text-center`}>AI素材卡片</div>
       {isImageSelected ? (
-        <div className={styles.selectedImageBlock}>
-          <img src={selectedImageUrl || ""} alt="Selected" className={styles.selectedImage} />
-          <div className={styles.textContainer}>
-            <p>{displayedTextForPic}</p>
-            <BsArrowRepeat 
-              className={`${styles.regenerateIcon} ${isRotating ? styles.rotate : ''}`} 
-              onClick={handleRegeneratePic} 
+        <div className={styles.scrollSecondary}>
+          <div key={selectedTag} className={styles.imageContainer} style={{marginBottom: '-20px', marginTop: '40px'}}>
+            <div className={styles.cardLabelPic}>{selectedTag}</div> 
+            <img 
+              src={selectedImageUrl || ""}
+              alt="Selected"
+              className={styles.image} 
             />
           </div>
-          <button className={styles.actionButton}>
-            <BsBoxArrowInUpLeft className={styles.iconButton} />
-            插入文中
-          </button>
+          <div className={styles.selectedImageBlock}>
+            {/* <img src={selectedImageUrl || ""} alt="Selected" className={styles.selectedImage} /> */}
+            <div className={styles.resultHeading}>
+              <BsStars></BsStars>
+              <p>生成结果</p>
+            </div>
+            <div className={styles.textContainer}>
+              <p>{displayedTextForPic}</p>
+            </div>
+            <div className={styles.actionButtonContainer}>
+              <button className={styles.actionButton}>
+                <BsBoxArrowInUpLeft />
+                插入文中
+              </button>
+              <button 
+                className={`${styles.actionButton}`} 
+                onClick={() => {
+                  setDisplayedTextForPic(''); 
+                  setTextQueueForPic([]);     
+                  handleRegeneratePic();       
+                }}
+              >
+                <BsArrowRepeat className={`${isRotating ? styles.rotate : ''}`} />
+                重新生成
+              </button>
+            </div>
+          </div>
         </div>
       ) : isTextSelected ? (
-        <div className={styles.selectedImageBlock}>
-          <div className={styles.textContainer}>
-            <p>{displayedTextForText}</p>
-            <BsArrowRepeat 
-              className={`${styles.regenerateIcon} ${isRotating ? styles.rotate : ''}`} 
-              onClick={handleRegenerateText}
-            />
+        <div className={styles.scrollSecondary}>
+          <div key={selectedTag} className={styles.imageContainer} style={{marginBottom: '-20px', marginTop: '40px'}}>
+            <div 
+              key={selectedTagForText}
+              className={styles.card}
+            >
+              <div className={styles.cardLabelText}>{selectedTagForText}</div>
+              {lastText}
+            </div>
           </div>
-          <button className={styles.actionButton}>
-            <BsBoxArrowInUpLeft className={styles.iconButton} />
-            插入文中
-          </button>
+          <div className={styles.selectedImageBlock}>
+            <div className={styles.resultHeading}>
+                <BsStars></BsStars>
+                <p>生成结果</p>
+            </div>
+            <div className={styles.textContainer}>
+              <p>{displayedTextForText}</p>
+            </div>
+            <div className={styles.actionButtonContainer}>
+                <button className={styles.actionButton}>
+                  <BsBoxArrowInUpLeft />
+                  插入文中
+                </button>
+                <button 
+                  className={`${styles.actionButton}`} 
+                  onClick={() => {
+                    setDisplayedTextForText(''); 
+                    setTextQueueForText([]);     
+                    handleRegenerateText();       
+                  }}
+                >
+                  <BsArrowRepeat className={`${isRotating ? styles.rotate : ''}`} />
+                  重新生成
+                </button>
+              </div>
+          </div>
         </div>
       ) : (
         <>
@@ -247,7 +295,7 @@ export default function CollapsibleToolbar() {
               <span className="text-sm">文字</span>
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full mb-4">
             <div className="flex flex-wrap gap-2 justify-start">
               {tabs.map((text, index) => (
                 <button
@@ -261,7 +309,7 @@ export default function CollapsibleToolbar() {
             </div>
           </div>
           {selectedSection === 0 && (
-            <div className={styles.scroll}>
+            <div className={styles.scrollPrimary}>
               <div className={styles.imageContainer}>
                 {filterAssets('image').map(asset => (
                   <div key={asset.id} className={styles.imageContainer}>
@@ -270,7 +318,7 @@ export default function CollapsibleToolbar() {
                       src={`${BASE_URL}/storage/images/${asset.image_id}`}
                       alt={asset.tag}
                       className={styles.image}
-                      onClick={() => handleImageClick(`${BASE_URL}/storage/images/${asset.image_id}`)} 
+                      onClick={() => handleImageClick(`${BASE_URL}/storage/images/${asset.image_id}`, asset.tag)} 
                     />
                   </div>
                 ))}  
@@ -279,16 +327,13 @@ export default function CollapsibleToolbar() {
             </div>
           )}
           {selectedSection === 1 && (
-            <div className={styles.scroll}>
-              <div 
-                className={styles.cardContainer}
-
-              >
+            <div className={styles.scrollPrimary}>
+              <div className={styles.cardContainer}>
                 {filterAssets('text').map(asset => (
                   <div 
                     key={asset.id} 
                     className={styles.card}
-                    onClick={() => handleTextClick(asset.text)} 
+                    onClick={() => handleTextClick(asset.text, asset.tag)} 
                   >
                     <div className={styles.cardLabelText}>{asset.tag}</div>
                     {asset.text}
