@@ -313,6 +313,26 @@ const api = {
       throw error;
     }
   },
+  // get novel with novel_id
+  getProject: async (novelId) => {
+    try {
+      const response = await fetch(`${BASE_URL}/novels/${novelId}`, {
+        method: "GET",
+        headers: {
+          "ngrok-skip-browser-warning": "fuck ngrok",
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Request failed with code ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching all templates:',error);
+      throw error;
+    }
+  },
 };
 
 // for testing

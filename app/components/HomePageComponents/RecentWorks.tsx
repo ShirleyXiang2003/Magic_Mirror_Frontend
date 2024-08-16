@@ -16,6 +16,7 @@ const RecentWorks: React.FC = () => {
   const [sortBy, setSortBy] = useState<'lastUpdated' | 'wordCount'>('lastUpdated');
   const [searchTerm, setSearchTerm] = useState('');
   const [novels, setNovels] = useState<Novel[]>([]);
+  const [selectedNovel, setSelectedNovel] = useState<Novel>();
 
   const fetchNovels = async () => {
     try {
@@ -23,6 +24,15 @@ const RecentWorks: React.FC = () => {
       setNovels(response.data);
     } catch (error) {
       console.error('Failed to fetch novels:', error);
+    }
+  };
+
+  const fetchProject = async (novelId : string) => {
+    try {
+      const response = await api.getProject(novelId);
+      setSelectedNovel(response.data);
+    } catch (error) {
+      console.error('Failed to fetch given novel:', error);
     }
   };
 
