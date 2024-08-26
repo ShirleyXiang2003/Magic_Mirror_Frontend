@@ -66,7 +66,7 @@ function QuillEditor({ onTextUpdate }: { onTextUpdate: (prev: string, next: stri
       const next = text.slice(cursorPosition, end);
   
       // set highlight
-      editor.formatText(start, end - start, { background: 'orange' });
+      editor.formatText(start, end - start, { background: '#E4EDFC' });
   
       // store previous and next text
       onTextUpdate(prev, next);

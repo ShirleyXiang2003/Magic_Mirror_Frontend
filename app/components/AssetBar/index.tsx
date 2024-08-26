@@ -10,7 +10,7 @@ interface AssetsBarProps {
 }
 
 export default function AssetsBar({ prevText, nextText }: AssetsBarProps) {
-  const BASE_URL = "http://10.63.11.23:3000";
+  const BASE_URL = "http://10.144.51.20:3000";
   const [selectedSection, setSelectedSection] = useState(0); 
   const [selectedTab, setSelectedTab] = useState(0);
   const [assets, setAssets] = useState<any[]>([]);
@@ -200,7 +200,6 @@ export default function AssetsBar({ prevText, nextText }: AssetsBarProps) {
 
   return (
     <div className="w-full">
-      <div className={`text-lg mb-4 text-center`}>AI素材卡片</div>
       {isImageSelected ? (
         <div className={styles.scrollSecondary}>
           <div key={selectedTag} className={styles.imageContainer} style={{marginBottom: '-20px', marginTop: '40px'}}>
@@ -281,17 +280,17 @@ export default function AssetsBar({ prevText, nextText }: AssetsBarProps) {
         <>
           <div className="flex flex-row w-full justify-evenly mb-4">
             <div 
-              className={`flex flex-row items-center flex-1 justify-center px-8 py-4 cursor-pointer space-x-2 ${selectedSection === 0 ? "border-b-2 border-black" : ''} hover:border-b-2 hover:border-black`} 
+              className={`flex flex-row items-center flex-1 justify-center px-8 py-4 cursor-pointer space-x-2 ${selectedSection === 0 ? "border-b-2 border-[#126FD6]" : ''} hover:border-b-2 hover:border-[#126FD6]`} 
               onClick={() => handleSectionClick(0)}
             >
-              <BsImages className="text-base" />
+              {/* <BsImages className="text-base" /> */}
               <span className="text-sm">图片</span>
             </div>
             <div 
-              className={`flex flex-row items-center flex-1 justify-center px-8 py-4 cursor-pointer space-x-2 ${selectedSection === 1 ? "border-b-2 border-black" : ''} hover:border-b-2 hover:border-black`} 
+              className={`flex flex-row items-center flex-1 justify-center px-8 py-4 cursor-pointer space-x-2 ${selectedSection === 1 ? "border-b-2 border-[#126FD6]" : ''} hover:border-b-2 hover:border-[#126FD6]`} 
               onClick={() => handleSectionClick(1)}
             >
-              <BsReverseLayoutTextSidebarReverse className="text-base" />
+              {/* <BsReverseLayoutTextSidebarReverse className="text-base" /> */}
               <span className="text-sm">文字</span>
             </div>
           </div>
@@ -300,7 +299,7 @@ export default function AssetsBar({ prevText, nextText }: AssetsBarProps) {
               {tabs.map((text, index) => (
                 <button
                   key={index}
-                  className={`px-4 py-2 text-center rounded-full text-xs cursor-pointer outline-none border-2 border-[#2D3648] box-content ${selectedTab === index ? "bg-[#2D3648] text-white" : ""}`}
+                  className={`px-4 py-2 text-center rounded-full text-xs cursor-pointer outline-none border-2 border-[#E4EDFC] box-content bg-[#E4EDFC] ${selectedTab === index ? "bg-[#126FD6] text-white" : ""}`}
                   onClick={() => handleTabClick(index)}
                 >
                   {text}

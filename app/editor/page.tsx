@@ -11,7 +11,7 @@ const Header = ({ onClick, lastSaved, title, onTitleChange }: { onClick: any, la
   <header className="h-auto px-4 py-5 flex ml-10 justify-between items-center">
     <div className="flex items-center">
       <Link href="/home/templates">
-        <BsHouseDoorFill size={45} className="mr-4 border border-2 border-black rounded-md p-2 hover:bg-[#2D3648] hover:text-white hover:border-transparent transition-all duration-200" />
+        <BsHouseDoorFill size={45} style={{ color: '#126FD6' }} className="mr-4 border border-2 hover:border-[#126FD6] rounded-md p-2 bg-[#E4EDFC] hover:text-white hover:border-transparent transition-all duration-200" />
       </Link>
       <div>
         <input
@@ -27,10 +27,10 @@ const Header = ({ onClick, lastSaved, title, onTitleChange }: { onClick: any, la
       </div>
     </div>
     <button
-      className="px-12 py-2 border border-black border-2 mr-10 rounded-md hover:bg-[#2D3648] hover:text-white hover:border-transparent transition-all duration-200"
+      className="px-6 py-2 border border-[#126FD6] border-2 mr-10 rounded-md text-[#126FD6] hover:bg-[#126FD6] hover:text-white hover:border-transparent transition-all duration-200"
       onClick={onClick}
     >
-      保存
+      保存文稿
     </button>
   </header>
 );
@@ -55,11 +55,15 @@ const Page = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // 每次标题更新时，将标题保存到本地存储
+    localStorage.setItem('title', title);
+  }, [title]);
+
   const handleSave = () => {
     const now = new Date();
     const formattedDate = now.toLocaleString(); // 格式化当前时间
     setLastSaved(formattedDate); // 更新最后保存时间
-    localStorage.setItem('title', title);
     localStorage.setItem('lastSaved', formattedDate);
   };
 
@@ -80,16 +84,16 @@ const Page = () => {
         title={title} 
         onTitleChange={handleTitleChange} 
       />
-      <main className="flex flex-col md:flex-row flex-1 border-t-4 overflow-hidden">
+      <main className="flex flex-col md:flex-row flex-1 border-t-2 overflow-hidden">
         {!isSidebarCollapsed && (
-          <aside className="w-full md:w-[320px] border-r-4 h-full overflow-auto">
+          <aside className="w-full md:w-[320px] h-full overflow-auto">
             <CollapsibleOutlineBar />
           </aside>
         )}
         
         <div className="relative flex-1 w-full min-h-full">
           <button 
-            className={`absolute top-1/2 left-0 transform -translate-y-1/2 w-12 h-12 bg-[#2D3648] text-white border-none p-3 flex justify-center items-center rounded-l-none rounded-r-3xl`}
+            className={`absolute top-1/2 left-0 transform -translate-y-1/2 w-12 h-12 bg-[#126FD6] text-white border-none p-3 flex justify-center items-center rounded-l-none rounded-r-3xl`}
             onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
             style={{ zIndex: 10 }}
           >
@@ -97,7 +101,7 @@ const Page = () => {
           </button>
           <QuillEditor onTextUpdate={handleTextUpdate} />
         </div>
-        <div className="w-full md:w-[320px] p-4 border-l-4 h-full">
+        <div className="w-full md:w-[320px] p-4 h-full bg-[#F4F6FC]">
           <AssetsBar prevText={prevText} nextText={nextText} />
         </div>
       </main>

@@ -1,4 +1,4 @@
-const BASE_URL = "http://10.63.11.23:3000";
+const BASE_URL = "http://10.144.51.20:3000";
 
 const api = {
   // Fetch a message from the root context endpoint

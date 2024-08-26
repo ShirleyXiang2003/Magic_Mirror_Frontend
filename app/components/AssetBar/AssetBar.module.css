@@ -124,16 +124,16 @@
 }
 
 .selected {
-  background: #2D3648;
+  background: #126FD6;
   opacity: 1;
   color: #FFF;
 }
 
 .unselected {
   background: transparent;
-  border: 2px solid #2D3648;
+  border: 2px solid #126FD6;
   opacity: 1;
-  color: #2D3648;
+  color: #126FD6;
 }
 
 .cardContainer {
@@ -249,7 +249,7 @@
   gap: 8px;
   border-radius: 8px;
   opacity: 1;
-  background: #2D3648;
+  background: #126FD6;
   color: white;
   border: none;
   cursor: pointer;

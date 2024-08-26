@@ -3,6 +3,7 @@
   flex-direction: column;
   padding: 20px;
 }
+
 .searchContainer {
   position: relative;
   margin-bottom: 16px;
@@ -16,6 +17,7 @@
   border-radius: 9999px;
   font-size: 14px;
   outline: none;
+  font-weight: 100;
 }
 
 .searchIcon {
@@ -33,15 +35,39 @@
 }
 
 .title {
-  font-size: 16px;
+  font-size: 20px;
   margin-bottom: 16px;
   text-align: center;
+  font-weight: 300;
 }
 
 .subtitle {
   font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-weight: 300;
+  margin: 8px 0;
+  text-align: center;
+  position: relative;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.subtitle::before,
+.subtitle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 32%;
+  height: 1px;
+  background-color: #E4EDFC;
+  transform: translateY(-50%);
+}
+
+.subtitle::before {
+  left: 0;
+}
+
+.subtitle::after {
+  right: 0;
 }
 
 .list {
@@ -50,14 +76,144 @@
 }
 
 .listItem {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  font-weight: 100;
 }
 
 .smallTitle {
   font-size: 16px;
   margin-bottom: 4px;
+  text-align: left;
+  font-weight: 100;
 }
 
 .detail {
   margin-bottom: 16px;
+  font-weight: 100;
+}
+
+.summaryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.summaryItem {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 16px;
+  font-weight: 100;
+}
+
+.circleContainer {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.largeCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #C0D7F0;
+  position: relative;
+}
+
+.smallCircle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #126FD6;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.line {
+  position: absolute;
+  top: 10;
+  left: 50%;
+  height: 90px;
+  width: 2px;
+  background-color: #126FD6;
+  transform: translateX(-50%);
+}
+
+.frame {
+  align-items: center;
+  display: flex;
+  gap: var(--variable-collection-gap-padding-8);
+  position: relative;
+}
+
+.frame .reactIconsBs {
+  height: 16px !important;
+  position: relative !important;
+  width: 16px !important;
+}
+
+.frame .div {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  position: relative;
+}
+
+.frame .character {
+  color: var(--variable-collection-color-black);
+  font-family: var(--body-large-font-family);
+  font-size: var(--body-large-font-size);
+  font-style: var(--body-large-font-style);
+  font-weight: 100;
+  letter-spacing: var(--body-large-letter-spacing);
+  line-height: var(--body-large-line-height);
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+}
+
+.frame .intro {
+  color: var(--variable-collection-color-black);
+  font-family: var(--body-small-font-family);
+  font-size: var(--body-small-font-size);
+  font-style: var(--body-small-font-style);
+  font-weight: 100;
+  letter-spacing: var(--body-small-letter-spacing);
+  line-height: var(--body-small-line-height);
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.div > .list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+}
+
+.div > .list > li {
+  margin-bottom: 4px;
+  font-weight: 100;
 }
